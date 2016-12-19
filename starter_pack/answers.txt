@@ -1,0 +1,22 @@
+server.c accepts a port and a filepath as arguments, and will listen for connections
+on that port. It will write the contents of the file to all incoming connections,
+then close them.
+
+client.c attempts to connect to the provided host on the provided port and then
+simply prints whatever it can read from the connection to standard output, until
+the connection is closed.
+
+Errors:
+
+ - In server.c, there's a missing closing curly brace for the infinite for loop.
+ - In server.c, the check for number of arguments is wrong (should be 3 to account
+ for the filename, e.g. './server').
+ - In server.c, the first error message is printed using puts() (should be perror()).
+ - In server.c, need to initialize 'r' and 'w' to 0, and also need to modify the
+ write loop so that it doesn't write the same thing multiple times (i.e. need to
+ modify the pointer we pass to write() so that it's offset by 'w', and also need
+ to have the write count be 'r-w').
+ - In client.c, the buffer has size 'BUFSIZE-1' but 'BUFSIZE' is passed as the count
+ to read(), so program might segfault.
+ - In client.c, 1 is returned on success (should return 0, because 1 is already
+ used as an error code).
